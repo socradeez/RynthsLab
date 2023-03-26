@@ -26,9 +26,7 @@ class Game:
         self.map = mapgen.Map(1)
 
     def update_screen(self):
-        print(self.character.abs_position)
         self.camera.update(self.screen, self.character, self.map)
-        print(self.camera.abs_position)
 
     def run(self):
         while True:
@@ -38,22 +36,13 @@ class Game:
                     sys.exit()
             pressed_keys = pg.key.get_pressed()
             if pressed_keys[pg.K_w]:
-                self.character.abs_position[1] -= 3
+                self.character.abs_position[1] -= 1
             if pressed_keys[pg.K_s]:
-                self.character.abs_position[1] += 3
+                self.character.abs_position[1] += 1
             if pressed_keys[pg.K_a]:
-                self.character.abs_position[0] -= 3
+                self.character.abs_position[0] -= 1
             if pressed_keys[pg.K_d]:
-                self.character.abs_position[0] += 3
-            '''if event.type == pg.KEYDOWN:
-                if event.key == pg.K_w:
-                    self.character.abs_position[1] -= 3
-                if event.key == pg.K_s:
-                    self.character.abs_position[1] += 3
-                if event.key == pg.K_a:
-                    self.character.abs_position[0] -= 3
-                if event.key == pg.K_d:
-                    self.character.abs_position[0] += 3'''
+                self.character.abs_position[0] += 1
             self.update_screen()
 
 mygame = Game((400, 400))
