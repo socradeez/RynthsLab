@@ -9,7 +9,7 @@ class Camera:
         self.get_boundaries()
         self.max_x = max_x
         self.max_y = max_y
-
+    #this comment is for testing
     def update(self,screen, target, map):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
             self.abs_position[0] = 0

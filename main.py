@@ -21,7 +21,6 @@ class Game:
     def load_map(self, map):
         #generate a map object given a level number or title as input
         self.map = mapgen.Map(1)
-        print(self.map.hwalls)
 
     def update_screen(self):
         self.camera.update(self.screen, self.character, self.map)
@@ -41,15 +40,6 @@ class Game:
                 self.character.abs_position[0] -= 1
             if pressed_keys[pg.K_d]:
                 self.character.abs_position[0] += 1
-                '''if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_w:
-                        self.character.abs_position[1] -= 3
-                    if event.key == pg.K_s:
-                        self.character.abs_position[1] += 3
-                    if event.key == pg.K_a:
-                        self.character.abs_position[0] -= 3
-                    if event.key == pg.K_d:
-                        self.character.abs_position[0] += 3'''
             self.update_screen()
 
 mygame = Game((400, 400))
