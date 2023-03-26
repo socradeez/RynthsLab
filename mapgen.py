@@ -3,7 +3,8 @@ import random
 
 class Map:
     config = {1: {
-                'dims': (50, 50)
+                'dims': (50, 50),
+                'abs_dims': (2700, 2700)
     }}
     def __init__(self, level):
         #map object takes in the level number as argument to determine settings (size, rooms, etc)
@@ -15,6 +16,7 @@ class Map:
         #start by getting the dimensions of the maze matrix from the config options
         width = Map.config[self.level]['dims'][0]
         height = Map.config[self.level]['dims'][1]
+        self.abs_dims = Map.config[self.level]['abs_dims']
         #initialize the arrays needed for maze generation and the cell stack
         cells = np.array([['uv'] * height] * width)
         hwalls = np.array([['bl'] * height] * width)

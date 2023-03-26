@@ -6,3 +6,4 @@ class SpriteCus(pygame.sprite.Sprite):
     def __init__(self, abs_position):
         super().__init__()
         self.abs_position = abs_position
+        self.cam_position = [0, 0]
