@@ -42,5 +42,5 @@ class Game:
                 self.character.abs_position[0] += 1
             self.update_screen()
 
-mygame = Game((400, 400))
+mygame = Game((1000, 800))
 mygame.load_map(1)

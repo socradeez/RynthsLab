@@ -8,11 +8,11 @@ class VWall(sprite_base.SpriteCus):
         self.indices = indices
         y, x = indices
         abs_x = x * 55 + 50
-        abs_y = y * 55
+        abs_y = y * 55 - 5
         abs_position = (abs_x, abs_y)
         super().__init__(abs_position)
         self.def_width = 5
-        self.def_height = 55
+        self.def_height = 60
 
     def draw(self, screen, camera):
         if self.abs_position[0] < camera.abs_position[0]:
@@ -34,11 +34,11 @@ class HWall(sprite_base.SpriteCus):
     def __init__(self, indices):
         self.indices = indices
         y, x = indices
-        abs_x = x * 55
+        abs_x = x * 55 - 5
         abs_y = y * 55 + 50
         abs_position = (abs_x, abs_y)
         super().__init__(abs_position)
-        self.def_width = 55
+        self.def_width = 60
         self.def_height = 5
 
     def draw(self, screen, camera):
@@ -55,7 +55,4 @@ class HWall(sprite_base.SpriteCus):
             self.cam_position[1] = self.abs_position[1] - camera.abs_top
             self.height = self.def_height
         self.rect = pg.Rect(self.cam_position[0], self.cam_position[1], self.width, self.height)
-        if self.indices[1] == 3:
-            self.image = pg.draw.rect(screen, (255, 0, 0), self.rect)
-        else:
-            self.image = pg.draw.rect(screen, (0, 0, 0), self.rect)
+        self.image = pg.draw.rect(screen, (0, 0, 0), self.rect)

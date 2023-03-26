@@ -4,7 +4,7 @@ import random
 class Map:
     config = {1: {
                 'dims': (50, 50),
-                'abs_dims': (2700, 2700)
+                'abs_dims': (2745, 2745)
     }}
     def __init__(self, level):
         #map object takes in the level number as argument to determine settings (size, rooms, etc)
