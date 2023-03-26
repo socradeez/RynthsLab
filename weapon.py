@@ -2,7 +2,7 @@
 import pygame as pg
 
 
-class Weapon:
+class BaseWeapon:
     """ Base class for all weapons. """
 
     def __init__(self, screen: pg.Surface, *groups) -> None:
@@ -21,7 +21,7 @@ class Weapon:
         pass
 
 
-class Gun(Weapon):
+class Gun(BaseWeapon):
     """ Simple gun that shoots bullets. """
 
     def __init__(self, screen: pg.Surface, *groups) -> None:
