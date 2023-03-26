@@ -2,6 +2,7 @@
 from typing import Optional
 
 import pygame as pg
+import sprite_base
 
 
 CHAR_SPEED = 10
@@ -13,12 +14,12 @@ keybindings = {
     'right': pg.K_d,
 }
 
-class Character(pygame.sprite.Sprite):
+class Character(sprite_base.SpriteCus):
     """ User controllable character. """
 
-    def __init__(self, screen: pg.Surface,
+    def __init__(self, abs_position, screen: pg.Surface,
                  img: Optional[str] = None, *groups) -> None:
-        super().__init__(self)
+        super().__init__(abs_position)
 
         # initialize the sprite
         pass
