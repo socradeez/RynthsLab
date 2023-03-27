@@ -50,6 +50,7 @@ class Character(sprite_base.SpriteCus):
         """ Update the character's position."""
         move_dist = 5
         start_pos = copy.deepcopy(self.abs_position)
+        print(self.abs_position)
         x = 0
         y = 1
         if key_input[keybindings['up']]:
