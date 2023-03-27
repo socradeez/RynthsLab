@@ -12,6 +12,7 @@ class Camera:
         self.max_x = max_x
         self.max_y = max_y
     #this comment is for testing
+
     def update(self, screen, target, map,
                key_input: Optional = None,
                mouse_input: Optional = None):
