@@ -11,6 +11,7 @@ class Camera:
         self.get_boundaries()
         self.max_x = max_x
         self.max_y = max_y
+        print(self.resolution)
     #this comment is for testing
 
     def update(self, screen, target, map,
@@ -18,16 +19,22 @@ class Camera:
                mouse_input: Optional = None):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
             self.abs_position[0] = 0
+            print(self.abs_position, 5)
         elif target.abs_position[0] + (self.resolution[0] // 2) >= self.max_x:
             self.abs_position[0] = self.max_x - self.resolution[0]
+            print(self.abs_position, 4)
         else:
             self.abs_position[0] = target.abs_position[0] - (self.resolution[0] // 2)
+            print(self.abs_position, 3)
         if target.abs_position[1] - (self.resolution[1] // 2) < 0:
             self.abs_position[1] = 0
+            print(self.abs_position, 2)
         elif target.abs_position[1] + (self.resolution[1] // 2) >= self.max_y:
             self.abs_position[1] = self.max_y - self.resolution[1]
+            print(self.abs_position, 1)
         else:
             self.abs_position[1] = target.abs_position[1] - (self.resolution[1] // 2)
+            print(self.abs_position)
         self.get_boundaries()
         self.get_walls_visible(map)
         if key_input is not None or mouse_input is not None:
@@ -47,8 +54,8 @@ class Camera:
         self.hwalls = pg.sprite.Group()
         self.vwalls = pg.sprite.Group()
         #get the index range for walls inside display area
-        x_wall_range = range(self.abs_left // 55, min(self.abs_right // 55 + 1, 50))
-        y_wall_range = range(self.abs_top // 55, min(self.abs_bottom // 55 + 1, 50))
+        x_wall_range = range(int(self.abs_left // 55), min(int(self.abs_right // 55 + 1), 50))
+        y_wall_range = range(int(self.abs_top // 55), min(int(self.abs_bottom // 55 + 1), 50))
         for x in x_wall_range:
             for y in y_wall_range:
                 if map.hwalls[y][x] == 'bl':
