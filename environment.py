@@ -16,7 +16,7 @@ class VWall(sprite_base.SpriteCus):
         super().__init__(abs_position)
         self.def_width = 5
         self.def_height = 60
-        self.rect = pg.Rect(10, 10, self.def_width, self.def_height)
+        self.rect = pg.Rect(x, y, self.def_width, self.def_height)
 
     def draw(self, screen, camera):
         if self.abs_position[0] < camera.abs_position[0]:
@@ -44,7 +44,7 @@ class HWall(sprite_base.SpriteCus):
         super().__init__(abs_position)
         self.def_width = 60
         self.def_height = 5
-        self.rect = pg.Rect(10, 10, self.def_width, self.def_height)
+        self.rect = pg.Rect(x, y, self.def_width, self.def_height)
 
     def draw(self, screen, camera):
         if self.abs_position[0] < camera.abs_left:
@@ -64,9 +64,11 @@ class HWall(sprite_base.SpriteCus):
 
 
 def check_wall_collision(sprite: sprite_base.SpriteCus, wall_sprite: Union[HWall, VWall]):
-    # check if the sprite has collided with a wall based on absolute pos
-    # if it hasn't, return None
-    wall_rect = pg.rect.Rect(wall_sprite.abs_position, (wall_sprite.def_width, wall_sprite.def_height))
+    """ Callback for pygame.sprite.spritecollideany() to check for collisions
+        between a sprite and a wall
+    """
+    wall_rect = pg.rect.Rect(wall_sprite.abs_position,
+                             (wall_sprite.def_width, wall_sprite.def_height))
     return pg.Rect.colliderect(sprite.rect, wall_rect)
 
 

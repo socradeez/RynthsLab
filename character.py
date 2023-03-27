@@ -28,7 +28,6 @@ class Character(sprite_base.SpriteCus):
         super().__init__(abs_position=abs_position)
         self.screen = screen
         self.screen_right, self.screen_bottom = self.screen.get_size()
-        print("Screen size", self.screen_right, self.screen_bottom)
         self.look_pos = pg.math.Vector2(look_pos)
         self.image: pg.Surface = pg.Surface((5, 5))
         self.image.fill((136, 8, 8))
@@ -55,8 +54,6 @@ class Character(sprite_base.SpriteCus):
             self.dy(-CHAR_SPEED)
             if (self.check_collision() or (self.y < 0)):
                 self.dy(CHAR_SPEED)
-            # if collision_adj:
-            #     self.abs_position = start_pos - collision_adj
 
         if key_input[keybindings['down']]:
             self.dy(CHAR_SPEED)
@@ -64,17 +61,10 @@ class Character(sprite_base.SpriteCus):
                     (self.y > self.screen_bottom - self.rect.height)):
                 self.dy(-CHAR_SPEED)
 
-            # collision_adj = self.check_collision(start_pos, x)
-            # if collision_adj:
-            #     self.abs_position = start_pos + collision_adj
-
         if key_input[keybindings['left']]:
             self.dx(-CHAR_SPEED)
             if (self.check_collision() or (self.x < 0)):
                 self.dx(CHAR_SPEED)
-            # collision_adj = self.check_collision(start_pos, y)
-            # if collision_adj:
-            #     self.abs_position = start_pos - collision_adj
 
         if key_input[keybindings['right']]:
             self.dx(CHAR_SPEED)
@@ -88,24 +78,24 @@ class Character(sprite_base.SpriteCus):
                                                group=self.bounds,
                                                collided=check_wall_collision)
         if collision is not None:
-            print("Collision detected:", collision)
             return True
         else:
             return False
 
-
     def update_dir(self, mouse_input) -> None:
         """ Update the character's direction. """
+        pass
 
     def use_weapon(self, mouse_input) -> None:
         """ Use the character's weapon. """
+        pass
 
     def animate(self) -> None:
         """ Animate the character. """
         # thinking different image for each direction
+        pass
 
     def update_bounds(self, *bounds: pg.sprite.Group) -> None:
         """ Update the bounds of the character. """
         self.bounds.empty()
         self.bounds.add(*bounds)
-        print("Bounds updated:", self.bounds)

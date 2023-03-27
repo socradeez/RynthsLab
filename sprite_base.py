@@ -1,7 +1,7 @@
 #base sprite class to utilize for any sprites that will be drawn to the screen
 #custom class is necessary due to absolute vs relative positioning for camera
 from dataclasses import dataclass
-from typing import NamedTuple, Tuple
+from typing import List, NamedTuple, Tuple
 
 import pygame
 
@@ -23,12 +23,14 @@ class SpriteCus(pygame.sprite.Sprite):
 
     x = Position()
     y = Position()
+    rel_x = Position()
+    rel_y = Position()
 
     def __init__(self, abs_position: Tuple[int, int]):
         super().__init__()
         self.x, self.y = abs_position
         self.cam_position = [0, 0]
-        self.rect: pygame.Rect(self.x, self.y, 0, 0)
+        self.rect: pygame.Rect
 
     @property
     def abs_position(self) -> Tuple[int, int]:
@@ -38,6 +40,14 @@ class SpriteCus(pygame.sprite.Sprite):
     def abs_position(self, value: Tuple[int, int]):
         self.rect.move_ip(value[0] - self.x, value[1] - self.y)
         self.x, self.y = value
+
+    @property
+    def rel_position(self) -> Tuple[int, int]:
+        return (self.rel_x, self.rel_y)
+
+    @rel_position.setter
+    def rel_position(self, value: List[int]):
+        self.rel_x, self.rel_y = value
 
     def dx(self, value: int):
         self.x += value
