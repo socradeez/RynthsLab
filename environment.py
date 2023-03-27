@@ -13,6 +13,7 @@ class VWall(sprite_base.SpriteCus):
         super().__init__(abs_position)
         self.def_width = 5
         self.def_height = 55
+        self.rect: pg.Rect
 
     def draw(self, screen, camera):
         if self.abs_position[0] < camera.abs_position[0]:
@@ -40,6 +41,7 @@ class HWall(sprite_base.SpriteCus):
         super().__init__(abs_position)
         self.def_width = 55
         self.def_height = 5
+        self.rect: pg.Rect
 
     def draw(self, screen, camera):
         if self.abs_position[0] < camera.abs_left:

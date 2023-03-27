@@ -1,5 +1,7 @@
 #camera class for display logic
 import environment
+from typing import Optional
+
 import pygame as pg
 
 class Camera:
@@ -10,7 +12,9 @@ class Camera:
         self.max_x = max_x
         self.max_y = max_y
     #this comment is for testing
-    def update(self,screen, target, map):
+    def update(self, screen, target, map,
+               key_input: Optional = None,
+               mouse_input: Optional = None):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
             self.abs_position[0] = 0
         elif target.abs_position[0] + (self.resolution[0] // 2) >= self.max_x:
@@ -25,7 +29,12 @@ class Camera:
             self.abs_position[1] = target.abs_position[1] - (self.resolution[1] // 2)
         self.get_boundaries()
         self.get_walls_visible(map)
-        self.render_sprites(screen)
+        if key_input is not None or mouse_input is not None:
+            self.update_character(target, key_input, mouse_input)
+        self.render_sprites(screen, target)
+
+    def update_character(self, target, key_input, mouse_input):
+        target.update(key_input, mouse_input, self.hwalls, self.vwalls)
 
     def get_boundaries(self):
         self.abs_left = self.abs_position[0]
@@ -37,8 +46,11 @@ class Camera:
         self.hwalls = pg.sprite.Group()
         self.vwalls = pg.sprite.Group()
         #get the index range for walls inside display area
-        x_wall_range = range(self.abs_left // 55, self.abs_right // 55 + 1)
-        y_wall_range = range(self.abs_top // 55, self.abs_bottom // 55 + 1)
+
+        x_wall_range = range(int(self.abs_left // 55),
+                             int(self.abs_right // 55 + 1))
+        y_wall_range = range(int(self.abs_top // 55),
+                             int(self.abs_bottom // 55 + 1))
         for x in x_wall_range:
             for y in y_wall_range:
                 if map.hwalls[y][x] == 'bl':
@@ -46,13 +58,14 @@ class Camera:
                 if map.vwalls[y][x] == 'bl':
                     self.vwalls.add(environment.VWall((y, x)))
 
-    def render_sprites(self, screen):
+    def render_sprites(self, screen, target: pg.sprite.Sprite):
         screen.fill((255, 255, 255))
         for wall in self.hwalls:
             wall.draw(screen, self)
         for wall in self.vwalls:
             wall.draw(screen, self)
+        target.draw()
         pg.display.flip()
-                
 
-        
+
+
