@@ -34,7 +34,6 @@ class Character(sprite_base.SpriteCus):
         self.rect = self.image.get_rect()
         self.groups = groups
 
-
     def draw(self) -> None:
         """ Draw the character to the screen. """
         pg.draw.rect(self.screen, (136,8,8), self.rect)
@@ -43,6 +42,7 @@ class Character(sprite_base.SpriteCus):
         """ Update character based on input. """
         self.groups = groups
         self.update_loc(key_input)
+        print("Current position:", self.abs_position)
         self.update_dir(mouse_input)
         self.use_weapon(mouse_input)
 
