@@ -11,7 +11,6 @@ class Camera:
         self.get_boundaries()
         self.max_x = max_x
         self.max_y = max_y
-    #this comment is for testing
 
     def update(self, screen, target, map,
                key_input: Optional = None,
@@ -35,7 +34,8 @@ class Camera:
         self.render_sprites(screen, target)
 
     def update_character(self, target, key_input, mouse_input):
-        target.update(key_input, mouse_input, self.hwalls, self.vwalls)
+        target.update_bounds(self.hwalls, self.vwalls)
+        target.update(key_input, mouse_input)
 
     def get_boundaries(self):
         self.abs_left = self.abs_position[0]

@@ -15,7 +15,7 @@ class TestGame:
         self.load_map(1)
         self.abs_dimensions = (self.map.abs_dims[0], self.map.abs_dims[1])
         self.camera = camera.Camera([150, 150], resolution, self.abs_dimensions[0], self.abs_dimensions[1])
-        self.character = character.Character(abs_position=[150, 150],
+        self.character = character.Character(abs_position=(0, 0),
                                              look_pos=(0,0),
                                              screen=self.screen)
         self.camera.update(self.screen, self.character, self.map)
@@ -36,7 +36,7 @@ class TestGame:
     def run(self):
 
         while True:
-            self.clock.tick(60)
+            self.clock.tick(120)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
