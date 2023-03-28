@@ -5,9 +5,11 @@ from typing import List, NamedTuple, Tuple
 
 import pygame
 
+
 class Coord(NamedTuple):
     x: int
     y: int
+
 
 class Position:
     # thinking of fancier position validation or absolute/relative positioning

@@ -1,6 +1,6 @@
 """ Core module for main character logic. """
 import copy
-from typing import Optional, List, Tuple, Union
+from typing import Optional, Tuple, Union
 
 import pygame as pg
 
