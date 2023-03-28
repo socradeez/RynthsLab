@@ -5,6 +5,7 @@ from typing import Optional, Tuple, Union
 import pygame as pg
 
 import sprite_base
+import projectile
 
 
 CHAR_SPEED = 2
@@ -20,13 +21,12 @@ class Character(sprite_base.EntityCus):
     """ User controllable character. """
     bounds = pg.sprite.Group()
 
-    def __init__(self, abs_dims,
+    def __init__(self, abs_dims, camera,
                  abs_position: Tuple[int, int],
                  look_pos: Tuple[int],
-                 screen: pg.Surface,
                  image: Optional[str] = None) -> None:
         super().__init__(abs_position=abs_position)
-        self.screen = screen
+        self.camera = camera
         self.map_right, self.map_bottom = abs_dims
         self.look_pos = pg.math.Vector2(look_pos)
         self.image: pg.Surface = pg.Surface((5, 5))
@@ -87,6 +87,7 @@ class Character(sprite_base.EntityCus):
 
     def use_weapon(self, mouse_input) -> None:
         """ Use the character's weapon. """
+        self.camera.char_bullets.add(projectile.BasicProjectile(self, mouse_input))
         pass
 
     def animate(self) -> None:

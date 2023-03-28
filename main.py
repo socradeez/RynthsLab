@@ -13,9 +13,8 @@ class Game:
         self.load_map(1)
         self.abs_dimensions = pg.math.Vector2(self.map.abs_dims[0], self.map.abs_dims[1])
         self.camera = camera.Camera(pg.math.Vector2(150, 150), resolution, self.abs_dimensions[0], self.abs_dimensions[1])
-        self.character = character.Character(self.abs_dimensions, abs_position=pg.math.Vector2(0, 0),
-                                             look_pos=pg.math.Vector2(0,0),
-                                             screen=self.camera.screen)
+        self.character = character.Character(self.abs_dimensions, self.camera, abs_position=pg.math.Vector2(0, 0),
+                                             look_pos=pg.math.Vector2(0,0))
         self.camera.update(self.character, self.map)
         self.clock = pg.time.Clock()
         self.run()
@@ -37,6 +36,8 @@ class Game:
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    self.character.use_weapon(pg.mouse.get_pos())
             k_input = pg.key.get_pressed()
             m_input = pg.mouse.get_pos()
             self.character.update_bounds(self.camera.vwalls, self.camera.hwalls)

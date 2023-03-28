@@ -12,6 +12,7 @@ class Camera:
         self.max_x = max_x
         self.max_y = max_y
         self.screen = pg.display.set_mode(resolution)
+        self.char_bullets = pg.sprite.Group()
 
     def update(self, target, map,
                key_input: Optional = None,
@@ -63,6 +64,9 @@ class Camera:
             wall.draw(self)
         for wall in self.vwalls:
             wall.draw(self)
+        for bullet in self.char_bullets:
+            bullet.update()
+            bullet.draw(self)
         target.draw(self)
         pg.display.flip()
 
