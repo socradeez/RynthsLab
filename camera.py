@@ -48,7 +48,7 @@ class Camera:
         self.hwalls = pg.sprite.Group()
         self.vwalls = pg.sprite.Group()
         #get the index range for walls inside display area
-        x_wall_range = range(int(self.abs_left // 5), int(min(self.abs_right // 55 + 1, 50)))
+        x_wall_range = range(int(self.abs_left // 55), int(min(self.abs_right // 55 + 1, 50)))
         y_wall_range = range(int(self.abs_top // 55), int(min(self.abs_bottom // 55 + 1, 50)))
         for x in x_wall_range:
             for y in y_wall_range:
@@ -63,7 +63,7 @@ class Camera:
             wall.draw(self)
         for wall in self.vwalls:
             wall.draw(self)
-        target.draw()
+        target.draw(self)
         pg.display.flip()
 
 

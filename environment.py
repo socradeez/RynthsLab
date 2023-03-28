@@ -91,12 +91,6 @@ class VWall(sprite_base.EntityCus):
         self.image = pg.Surface((self.width, self.height))
         self.image.fill((0, 0, 0))
 
-def check_wall_collision(sprite: sprite_base.SpriteCus, wall_sprite: Union[HWall, VWall]):
-    """ Callback for pygame.sprite.spritecollideany() to check for collisions
-        between a sprite and a wall
-    """
-    wall_rect = pg.rect.Rect(wall_sprite.abs_position,
-                             (wall_sprite.width, wall_sprite.height))
-    return pg.Rect.colliderect(sprite.rect, wall_rect)
+
 
 

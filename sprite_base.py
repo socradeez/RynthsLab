@@ -63,11 +63,11 @@ class EntityCus(SpriteCus):
     def __init__(self, abs_position):
         super().__init__(abs_position)
 
-    def update_rel(self):
-        self.cam_position = self.abs_position - self.cam_position
+    def update_rel(self, camera):
+        self.cam_position = self.abs_position - camera.abs_position
         return self.cam_position
 
     def draw(self, camera):
-        self.update_rel()
+        self.update_rel(camera)
         self.rect.topleft = self.cam_position
         camera.screen.blit(self.image, self.rect)

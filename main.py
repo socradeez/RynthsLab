@@ -13,10 +13,9 @@ class Game:
         self.load_map(1)
         self.abs_dimensions = pg.math.Vector2(self.map.abs_dims[0], self.map.abs_dims[1])
         self.camera = camera.Camera(pg.math.Vector2(150, 150), resolution, self.abs_dimensions[0], self.abs_dimensions[1])
-        self.character = character.Character(abs_position=pg.math.Vector2(0, 0),
+        self.character = character.Character(self.abs_dimensions, abs_position=pg.math.Vector2(0, 0),
                                              look_pos=pg.math.Vector2(0,0),
                                              screen=self.camera.screen)
-        self.character.draw()
         self.camera.update(self.character, self.map)
         self.clock = pg.time.Clock()
         self.run()
