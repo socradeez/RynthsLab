@@ -15,7 +15,7 @@ class TestGame:
         self.load_map(1)
         self.abs_dimensions = (self.map.abs_dims[0], self.map.abs_dims[1])
         self.camera = camera.Camera([150, 150], resolution, self.abs_dimensions[0], self.abs_dimensions[1])
-        self.character = character.Character(abs_position=[150, 150],
+        self.character = character.Character(abs_position=(0, 0),
                                              look_pos=(0,0),
                                              screen=self.screen)
         self.camera.update(self.screen, self.character, self.map)
@@ -34,8 +34,9 @@ class TestGame:
 
 
     def run(self):
-        self.clock.tick(60)
+
         while True:
+            self.clock.tick(120)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
@@ -45,6 +46,36 @@ class TestGame:
             self.update_screen(key_input=k_input, mouse_input=m_input)
 
 
+
+# def basic_test():
+#     """ A basic game func to test the character class.
+#         Blank screen with character only. """
+#     pg.init()
+#     screen = pg.display.set_mode((680, 400))
+
+
+#     char = character.Character(abs_position=[150, 150],
+#                                look_pos=(0,0),
+#                                screen=screen)
+#     clock = pg.time.Clock()
+#     pg.display.flip()
+
+#     while True:
+#         clock.tick(60)
+#         for event in pg.event.get():
+#             if event.type == pg.QUIT:
+#                 pg.quit()
+#                 sys.exit()
+
+
+#         screen.fill((255, 255, 255))
+#         k_input = pg.key.get_pressed()
+#         m_input = pg.mouse.get_pos()
+#         char.update(key_input=k_input, mouse_input=m_input)
+#         pg.display.update()
+
+
+
 if __name__ == '__main__':
-    mygame = TestGame((400, 400))
-    mygame.load_map(1)
+    game = TestGame((1000, 800))
+    game.run()

@@ -3,10 +3,12 @@ import copy
 from typing import Optional, Tuple, Union
 
 import pygame as pg
+
+from environment import check_wall_collision
 import sprite_base
 
 
-CHAR_SPEED = 10
+CHAR_SPEED = 2
 
 keybindings = {
     'up': pg.K_w,
@@ -15,85 +17,85 @@ keybindings = {
     'right': pg.K_d,
 }
 
-test_char_rect = pg.Rect(0, 0, 5, 5)
-
 class Character(sprite_base.SpriteCus):
     """ User controllable character. """
+    bounds = pg.sprite.Group()
 
-    def __init__(self, abs_position: Union[pg.math.Vector2, Tuple[int, int]],
-                 look_pos: Union[pg.math.Vector2, Tuple[int, int]],
+    def __init__(self, abs_position: Tuple[int, int],
+                 look_pos: Tuple[int],
                  screen: pg.Surface,
-                 image: Optional[str] = None, *groups: pg.sprite.Group) -> None:
-        super().__init__(abs_position)
-
+                 image: Optional[str] = None) -> None:
+        super().__init__(abs_position=abs_position)
         self.screen = screen
-        self.abs_position: pg.math.Vector2 = pg.math.Vector2(abs_position)
+        self.screen_right, self.screen_bottom = self.screen.get_size()
         self.look_pos = pg.math.Vector2(look_pos)
         self.image: pg.Surface = pg.Surface((5, 5))
         self.image.fill((136, 8, 8))
         self.rect = self.image.get_rect()
-        self.groups = groups
 
     def draw(self) -> None:
         """ Draw the character to the screen. """
         pg.draw.rect(self.screen, (136,8,8), self.rect)
 
-    def update(self, key_input, mouse_input, *groups) -> None:
+    def update(self, key_input, mouse_input) -> None:
         """ Update character based on input. """
-        self.groups = groups
         self.update_loc(key_input)
-        print("Current position:", self.abs_position)
         self.update_dir(mouse_input)
         self.use_weapon(mouse_input)
+        self.draw()
 
     def update_loc(self, key_input) -> None:
         """ Update the character's position."""
-        move_dist = 5
         start_pos = copy.deepcopy(self.abs_position)
         x = 0
         y = 1
+
         if key_input[keybindings['up']]:
-            self.abs_position[y] -= 5
-            collision_adj = self.check_collision(start_pos, x)
-            if collision_adj:
-                self.abs_position = start_pos - collision_adj
+            self.dy(-CHAR_SPEED)
+            if (self.check_collision() or (self.y < 0)):
+                self.dy(CHAR_SPEED)
 
         if key_input[keybindings['down']]:
-            self.abs_position[y] += 5
-            collision_adj = self.check_collision(start_pos, x)
-            if collision_adj:
-                self.abs_position = start_pos + collision_adj
+            self.dy(CHAR_SPEED)
+            if (self.check_collision() or
+                    (self.y > self.screen_bottom - self.rect.height)):
+                self.dy(-CHAR_SPEED)
 
         if key_input[keybindings['left']]:
-            self.abs_position[x] -= 5
-            collision_adj = self.check_collision(start_pos, y)
-            if collision_adj:
-                self.abs_position = start_pos - collision_adj
+            self.dx(-CHAR_SPEED)
+            if (self.check_collision() or (self.x < 0)):
+                self.dx(CHAR_SPEED)
 
         if key_input[keybindings['right']]:
-            self.abs_position[x] += 5
-            collision_adj = self.check_collision(start_pos, y)
-            if collision_adj:
-                self.abs_position = start_pos + collision_adj
+            self.dx(CHAR_SPEED)
+            if (self.check_collision() or
+                    (self.x > self.screen_right - self.rect.width)):
+                self.dx(-CHAR_SPEED)
 
-    def check_collision(self, start_pos, axis) -> Tuple[int, int]:
+    def check_collision(self) -> bool:
         """ Check for collision with another object based on current position. """
-        collision_object: sprite_base.SpriteCus = pg.sprite.spritecollideany(sprite=self,
-                                                                             group=self.groups[axis])
-        if collision_object:
-            print("collision detected:", collision_object)
-            coll_pos = collision_object.abs_position
-            return start_pos - coll_pos
+        collision = pg.sprite.spritecollideany(sprite=self,
+                                               group=self.bounds,
+                                               collided=check_wall_collision)
+        if collision is not None:
+            return True
         else:
-            return None
-
+            return False
 
     def update_dir(self, mouse_input) -> None:
         """ Update the character's direction. """
+        pass
 
     def use_weapon(self, mouse_input) -> None:
         """ Use the character's weapon. """
+        pass
 
     def animate(self) -> None:
         """ Animate the character. """
         # thinking different image for each direction
+        pass
+
+    def update_bounds(self, *bounds: pg.sprite.Group) -> None:
+        """ Update the bounds of the character. """
+        self.bounds.empty()
+        self.bounds.add(*bounds)
