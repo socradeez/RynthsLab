@@ -44,11 +44,11 @@ class SpriteCus(pg.sprite.Sprite):
         self.x, self.y = value
 
     @property
-    def rel_position(self) -> Tuple[int, int]:
+    def cam_position(self) -> Tuple[int, int]:
         return (self.rel_x, self.rel_y)
 
-    @rel_position.setter
-    def rel_position(self, value: List[int]):
+    @cam_position.setter
+    def cam_position(self, value: List[int]):
         self.rel_x, self.rel_y = value
 
     def dx(self, value: int):
@@ -58,10 +58,6 @@ class SpriteCus(pg.sprite.Sprite):
     def dy(self, value: int):
         self.y += value
         self.rect.move_ip(0, value)
-
-class EntityCus(SpriteCus):
-    def __init__(self, abs_position):
-        super().__init__(abs_position)
 
     def update_rel(self, camera):
         self.cam_position = self.abs_position - camera.abs_position

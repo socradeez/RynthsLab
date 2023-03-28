@@ -6,7 +6,7 @@ import sprite_base
 import math
 import character
 
-class BasicProjectile(sprite_base.EntityCus):
+class BasicProjectile(sprite_base.SpriteCus):
     """ Simple projectile that moves in a straight line and can bounce off a surface. """
 
     def __init__(self,

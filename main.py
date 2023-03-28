@@ -23,11 +23,9 @@ class Game:
         #generate a map object given a level number or title as input
         self.map = mapgen.Map(1)
 
-    def update_screen(self, key_input, mouse_input):
+    def update_screen(self):
         self.camera.update(self.character,
-                           self.map,
-                           key_input=key_input,
-                           mouse_input=mouse_input)
+                           self.map)
 
     def run(self):
         while True:
@@ -42,7 +40,7 @@ class Game:
             m_input = pg.mouse.get_pos()
             self.character.update_bounds(self.camera.vwalls, self.camera.hwalls)
             self.character.update_loc(k_input)
-            self.update_screen(key_input=k_input, mouse_input=m_input)
+            self.update_screen()
 
 mygame = Game((1000, 800))
 mygame.load_map(1)

@@ -14,9 +14,7 @@ class Camera:
         self.screen = pg.display.set_mode(resolution)
         self.char_bullets = pg.sprite.Group()
 
-    def update(self, target, map,
-               key_input: Optional = None,
-               mouse_input: Optional = None):
+    def update(self, target, map):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
             self.abs_position[0] = 0
         elif target.abs_position[0] + (self.resolution[0] // 2) >= self.max_x:
@@ -31,13 +29,7 @@ class Camera:
             self.abs_position[1] = target.abs_position[1] - (self.resolution[1] // 2)
         self.get_boundaries()
         self.get_walls_visible(map)
-        #if key_input is not None or mouse_input is not None:
-            #self.update_character(target, key_input, mouse_input)
         self.render_sprites(target)
-
-    #def update_character(self, target, key_input, mouse_input):
-        #target.update_bounds(self.hwalls, self.vwalls)
-        #target.update(key_input, mouse_input)
 
     def get_boundaries(self):
         self.abs_left = self.abs_position[0]

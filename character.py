@@ -1,5 +1,6 @@
 """ Core module for main character logic. """
 import copy
+from abc import abstractmethod
 from typing import Optional, Tuple, Union
 
 import pygame as pg
@@ -17,7 +18,34 @@ keybindings = {
     'right': pg.K_d,
 }
 
-class Character(sprite_base.EntityCus):
+
+class BaseCharacter(sprite_base.SpriteCus):
+    """ Base class for all characters that move. """
+    bounds = pg.sprite.Group()
+
+    def __init__(self, abs_dims, camera,
+                abs_position: Tuple[int, int],
+                look_pos: Tuple[int]) -> None:
+        super().__init__(abs_position=abs_position)
+        self.camera = camera
+        self.map_right, self.map_bottom = abs_dims
+        self.look_pos = pg.math.Vector2(look_pos)
+
+    @abstractmethod
+    def update(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def update_loc(self, *args, **kwargs) -> None:
+        pass
+
+    def update_bounds(self, *bounds: pg.sprite.Group) -> None:
+        """ Update the bounds of the character. """
+        self.bounds.empty()
+        self.bounds.add(*bounds)
+
+
+class Character(BaseCharacter):
     """ User controllable character. """
     bounds = pg.sprite.Group()
 
@@ -25,30 +53,20 @@ class Character(sprite_base.EntityCus):
                  abs_position: Tuple[int, int],
                  look_pos: Tuple[int],
                  image: Optional[str] = None) -> None:
-        super().__init__(abs_position=abs_position)
-        self.camera = camera
-        self.map_right, self.map_bottom = abs_dims
-        self.look_pos = pg.math.Vector2(look_pos)
+        super().__init__(abs_position=abs_position, abs_dims=abs_dims,
+                         camera=camera, look_pos=look_pos)
         self.image: pg.Surface = pg.Surface((5, 5))
         self.image.fill((136, 8, 8))
         self.rect = self.image.get_rect()
-
-    '''def draw(self) -> None:
-        """ Draw the character to the screen. """
-        pg.draw.rect(self.screen, (136,8,8), self.rect)'''
 
     def update(self, key_input, mouse_input) -> None:
         """ Update character based on input. """
         self.update_loc(key_input)
         self.update_dir(mouse_input)
         self.use_weapon(mouse_input)
-        self.draw()
 
     def update_loc(self, key_input) -> None:
         """ Update the character's position."""
-        start_pos = copy.deepcopy(self.abs_position)
-        x = 0
-        y = 1
 
         if key_input[keybindings['up']]:
             self.dy(-CHAR_SPEED)
@@ -73,7 +91,7 @@ class Character(sprite_base.EntityCus):
                 self.dx(-CHAR_SPEED)
 
     def check_collision(self) -> bool:
-        """ Check for collision with another object based on current position. """
+        """ Check for collision with walls based on current position. """
         collision = pg.sprite.spritecollideany(sprite=self,
                                                group=self.bounds)
         if collision is not None:
@@ -95,7 +113,22 @@ class Character(sprite_base.EntityCus):
         # thinking different image for each direction
         pass
 
-    def update_bounds(self, *bounds: pg.sprite.Group) -> None:
-        """ Update the bounds of the character. """
-        self.bounds.empty()
-        self.bounds.add(*bounds)
+
+class BasicEnemy(BaseCharacter):
+    """ Slow moving enemy that follows the player. """
+
+    def __init__(self, abs_dims, camera, abs_position: Tuple[int, int],
+                 look_pos: Tuple[int]) -> None:
+        super().__init__(abs_dims, camera, abs_position, look_pos)
+
+    def update(self, target) -> None:
+        """ Update the enemy based on target's location.
+        """
+        pass
+
+    def update_loc(self, target) -> None:
+        """ Update the enemy's position."""
+        pass
+
+
+
