@@ -11,37 +11,32 @@ class Camera:
         self.get_boundaries()
         self.max_x = max_x
         self.max_y = max_y
+        self.screen = pg.display.set_mode(resolution)
 
-    def update(self, screen, target, map,
+    def update(self, target, map,
                key_input: Optional = None,
                mouse_input: Optional = None):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
             self.abs_position[0] = 0
-            print(self.abs_position, 5)
         elif target.abs_position[0] + (self.resolution[0] // 2) >= self.max_x:
             self.abs_position[0] = self.max_x - self.resolution[0]
-            print(self.abs_position, 4)
         else:
             self.abs_position[0] = target.abs_position[0] - (self.resolution[0] // 2)
-            print(self.abs_position, 3)
         if target.abs_position[1] - (self.resolution[1] // 2) < 0:
             self.abs_position[1] = 0
-            print(self.abs_position, 2)
         elif target.abs_position[1] + (self.resolution[1] // 2) >= self.max_y:
             self.abs_position[1] = self.max_y - self.resolution[1]
-            print(self.abs_position, 1)
         else:
             self.abs_position[1] = target.abs_position[1] - (self.resolution[1] // 2)
-            print(self.abs_position)
         self.get_boundaries()
         self.get_walls_visible(map)
-        if key_input is not None or mouse_input is not None:
-            self.update_character(target, key_input, mouse_input)
-        self.render_sprites(screen, target)
+        #if key_input is not None or mouse_input is not None:
+            #self.update_character(target, key_input, mouse_input)
+        self.render_sprites(target)
 
-    def update_character(self, target, key_input, mouse_input):
-        target.update_bounds(self.hwalls, self.vwalls)
-        target.update(key_input, mouse_input)
+    #def update_character(self, target, key_input, mouse_input):
+        #target.update_bounds(self.hwalls, self.vwalls)
+        #target.update(key_input, mouse_input)
 
     def get_boundaries(self):
         self.abs_left = self.abs_position[0]
@@ -62,12 +57,12 @@ class Camera:
                 if map.vwalls[y][x] == 'bl':
                     self.vwalls.add(environment.VWall((y, x)))
 
-    def render_sprites(self, screen, target: pg.sprite.Sprite):
-        screen.fill((255, 255, 255))
+    def render_sprites(self,target: pg.sprite.Sprite):
+        self.screen.fill((255, 255, 255))
         for wall in self.hwalls:
-            wall.draw(screen, self)
+            wall.draw(self)
         for wall in self.vwalls:
-            wall.draw(screen, self)
+            wall.draw(self)
         target.draw()
         pg.display.flip()
 

@@ -10,15 +10,14 @@ class Game:
         #setup pygame and the game window
         pg.init()
         self.resolution = resolution
-        self.screen = pg.display.set_mode(resolution)
         self.load_map(1)
-        self.abs_dimensions = (self.map.abs_dims[0], self.map.abs_dims[1])
-        self.camera = camera.Camera([150, 150], resolution, self.abs_dimensions[0], self.abs_dimensions[1])
-        self.character = character.Character(abs_position=(0, 0),
-                                             look_pos=(0,0),
-                                             screen=self.screen)
+        self.abs_dimensions = pg.math.Vector2(self.map.abs_dims[0], self.map.abs_dims[1])
+        self.camera = camera.Camera(pg.math.Vector2(150, 150), resolution, self.abs_dimensions[0], self.abs_dimensions[1])
+        self.character = character.Character(abs_position=pg.math.Vector2(0, 0),
+                                             look_pos=pg.math.Vector2(0,0),
+                                             screen=self.camera.screen)
         self.character.draw()
-        self.camera.update(self.screen, self.character, self.map)
+        self.camera.update(self.character, self.map)
         self.clock = pg.time.Clock()
         self.run()
 
@@ -27,8 +26,7 @@ class Game:
         self.map = mapgen.Map(1)
 
     def update_screen(self, key_input, mouse_input):
-        self.camera.update(self.screen,
-                           self.character,
+        self.camera.update(self.character,
                            self.map,
                            key_input=key_input,
                            mouse_input=mouse_input)
@@ -42,6 +40,8 @@ class Game:
                     sys.exit()
             k_input = pg.key.get_pressed()
             m_input = pg.mouse.get_pos()
+            self.character.update_bounds(self.camera.vwalls, self.camera.hwalls)
+            self.character.update_loc(k_input)
             self.update_screen(key_input=k_input, mouse_input=m_input)
 
 mygame = Game((1000, 800))

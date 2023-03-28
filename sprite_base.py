@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import List, NamedTuple, Tuple
 
-import pygame
+import pygame as pg
 
 
 class Coord(NamedTuple):
@@ -21,7 +21,7 @@ class Position:
         instance.__dict__[self.storage_name] = value
 
 
-class SpriteCus(pygame.sprite.Sprite):
+class SpriteCus(pg.sprite.Sprite):
 
     x = Position()
     y = Position()
@@ -30,9 +30,9 @@ class SpriteCus(pygame.sprite.Sprite):
 
     def __init__(self, abs_position: Tuple[int, int]):
         super().__init__()
-        self.x, self.y = abs_position
-        self.cam_position = [0, 0]
-        self.rect: pygame.Rect
+        self.x, self.y = pg.math.Vector2(abs_position)
+        self.cam_position = pg.math.Vector2(0, 0)
+        self.rect: pg.Rect
 
     @property
     def abs_position(self) -> Tuple[int, int]:
@@ -59,3 +59,15 @@ class SpriteCus(pygame.sprite.Sprite):
         self.y += value
         self.rect.move_ip(0, value)
 
+class EntityCus(SpriteCus):
+    def __init__(self, abs_position):
+        super().__init__(abs_position)
+
+    def update_rel(self):
+        self.cam_position = self.abs_position - self.cam_position
+        return self.cam_position
+
+    def draw(self, camera):
+        self.update_rel()
+        self.rect.topleft = self.cam_position
+        camera.screen.blit(self.image, self.rect)

@@ -4,7 +4,7 @@ import sprite_base
 import pygame as pg
 
 
-class VWall(sprite_base.SpriteCus):
+'''class VWall(sprite_base.SpriteCus):
     #initialize the wall by taking the indices from the vwall matrix
     def __init__(self, indices):
         #convert the indices the absolute pixel position on the map (cells are 50x50px and walls are 5x55px)
@@ -62,14 +62,41 @@ class HWall(sprite_base.SpriteCus):
         self.rect = pg.Rect(self.cam_position[0], self.cam_position[1], self.width, self.height)
         self.image = pg.draw.rect(screen, (0, 0, 0), self.rect)
 
+'''
+class HWall(sprite_base.EntityCus):
+    def __init__(self, indices):
+        self.indices = indices
+        y, x = indices
+        abs_x = x * 55 - 5
+        abs_y = y * 55 + 50
+        abs_position = (abs_x, abs_y)
+        super().__init__(abs_position)
+        self.width = 60
+        self.height = 5
+        self.rect = pg.Rect(x, y, self.width, self.height)
+        self.image = pg.Surface((self.width, self.height))
+        self.image.fill((0, 0, 0))
+
+class VWall(sprite_base.EntityCus):
+    def __init__(self, indices):
+        self.indices = indices
+        y, x = indices
+        abs_x = x * 55 + 50
+        abs_y = y * 55 - 5
+        abs_position = (abs_x, abs_y)
+        super().__init__(abs_position)
+        self.width = 5
+        self.height = 60
+        self.rect = pg.Rect(x, y, self.width, self.height)
+        self.image = pg.Surface((self.width, self.height))
+        self.image.fill((0, 0, 0))
 
 def check_wall_collision(sprite: sprite_base.SpriteCus, wall_sprite: Union[HWall, VWall]):
     """ Callback for pygame.sprite.spritecollideany() to check for collisions
         between a sprite and a wall
     """
     wall_rect = pg.rect.Rect(wall_sprite.abs_position,
-                             (wall_sprite.def_width, wall_sprite.def_height))
+                             (wall_sprite.width, wall_sprite.height))
     return pg.Rect.colliderect(sprite.rect, wall_rect)
-
 
 
