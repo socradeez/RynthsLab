@@ -26,7 +26,7 @@ class BasicProjectile(sprite_base.EntityCus):
         pass
 
 
-    def update(self) -> None:
+    def update_pos(self) -> None:
         """ Update the projectile's position. """
         self.abs_position = self.abs_position + self.velocity
         pass
@@ -34,7 +34,7 @@ class BasicProjectile(sprite_base.EntityCus):
     def draw(self, camera):
         self.update_rel(camera)
         self.rect.topleft = self.cam_position
-        if pg.sprite.spritecollideany(self, camera.vwalls) or pg.sprite.spritecollideany(self, camera.hwalls):
+        if pg.sprite.spritecollideany(self, camera.walls):
             self.kill()
             return
         camera.screen.blit(self.image, self.rect)
