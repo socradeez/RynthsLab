@@ -6,11 +6,6 @@ from typing import List, NamedTuple, Tuple
 import pygame as pg
 
 
-class Coord(NamedTuple):
-    x: int
-    y: int
-
-
 class Position:
     # thinking of fancier position validation or absolute/relative positioning
     # here, but for now just a simple descriptor for x and y locs
