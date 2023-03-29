@@ -14,7 +14,7 @@ class Camera:
         self.screen = pg.display.set_mode(resolution)
         self.char_bullets = pg.sprite.Group()
 
-    def update(self, target, map,
+    def update_pos(self, map, target,
                key_input: Optional = None,
                mouse_input: Optional = None):
         if target.abs_position[0] - (self.resolution[0] // 2) < 0:
@@ -33,7 +33,6 @@ class Camera:
         self.get_walls_visible(map)
         #if key_input is not None or mouse_input is not None:
             #self.update_character(target, key_input, mouse_input)
-        self.render_sprites(target)
 
     #def update_character(self, target, key_input, mouse_input):
         #target.update_bounds(self.hwalls, self.vwalls)
@@ -46,28 +45,23 @@ class Camera:
         self.abs_bottom = self.abs_position[1] + self.resolution[1]
 
     def get_walls_visible(self, map):
-        self.hwalls = pg.sprite.Group()
-        self.vwalls = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         #get the index range for walls inside display area
         x_wall_range = range(int(self.abs_left // 55), int(min(self.abs_right // 55 + 1, 50)))
         y_wall_range = range(int(self.abs_top // 55), int(min(self.abs_bottom // 55 + 1, 50)))
         for x in x_wall_range:
             for y in y_wall_range:
                 if map.hwalls[y][x] == 'bl':
-                    self.hwalls.add(environment.HWall((y, x)))
+                    self.walls.add(environment.Wall((y, x),'H'))
                 if map.vwalls[y][x] == 'bl':
-                    self.vwalls.add(environment.VWall((y, x)))
+                    self.walls.add(environment.Wall((y, x),'V'))
 
-    def render_sprites(self,target: pg.sprite.Sprite):
+    def render_sprites(self, handler):
         self.screen.fill((255, 255, 255))
-        for wall in self.hwalls:
-            wall.draw(self)
-        for wall in self.vwalls:
-            wall.draw(self)
-        for bullet in self.char_bullets:
-            bullet.update()
-            bullet.draw(self)
-        target.draw(self)
+        handler.character.draw(self)
+        for group in handler.sprite_groups:
+            for sprite in group:
+                sprite.draw(self)
         pg.display.flip()
 
 

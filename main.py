@@ -4,6 +4,7 @@ import mapgen
 import camera
 import character
 import sys
+import handler
 
 class Game:
     def __init__(self, resolution):
@@ -15,19 +16,14 @@ class Game:
         self.camera = camera.Camera(pg.math.Vector2(150, 150), resolution, self.abs_dimensions[0], self.abs_dimensions[1])
         self.character = character.Character(self.abs_dimensions, self.camera, abs_position=pg.math.Vector2(0, 0),
                                              look_pos=pg.math.Vector2(0,0))
-        self.camera.update(self.character, self.map)
+        self.handler = handler.EntityHandler(self.camera, self.character)
+        self.camera.update_pos(self.map, self.character)
         self.clock = pg.time.Clock()
         self.run()
 
     def load_map(self, map):
         #generate a map object given a level number or title as input
         self.map = mapgen.Map(1)
-
-    def update_screen(self, key_input, mouse_input):
-        self.camera.update(self.character,
-                           self.map,
-                           key_input=key_input,
-                           mouse_input=mouse_input)
 
     def run(self):
         while True:
@@ -37,12 +33,15 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.MOUSEBUTTONDOWN:
-                    self.character.use_weapon(pg.mouse.get_pos())
+                    self.character.use_weapon(pg.mouse.get_pos(), self.handler.char_projectiles)
             k_input = pg.key.get_pressed()
             m_input = pg.mouse.get_pos()
-            self.character.update_bounds(self.camera.vwalls, self.camera.hwalls)
-            self.character.update_loc(k_input)
-            self.update_screen(key_input=k_input, mouse_input=m_input)
+            #updates abs_pos for all entities, (char first, then camera, then everything else)
+            self.handler.update_abs_positions(k_input, self.map)
+            #update all rects for entities tracked
+            self.handler.update_rects()
+            #draw all tracked sprites
+            self.camera.render_sprites(self.handler)
 
 mygame = Game((1000, 800))
 mygame.load_map(1)

@@ -37,14 +37,12 @@ class Character(sprite_base.EntityCus):
         """ Draw the character to the screen. """
         pg.draw.rect(self.screen, (136,8,8), self.rect)'''
 
-    def update(self, key_input, mouse_input) -> None:
+    '''def update(self, key_input) -> None:
         """ Update character based on input. """
-        self.update_loc(key_input)
-        self.update_dir(mouse_input)
-        self.use_weapon(mouse_input)
-        self.draw()
+        self.update_loc(key_input)'''
+        
 
-    def update_loc(self, key_input) -> None:
+    def update_pos(self, key_input) -> None:
         """ Update the character's position."""
         start_pos = copy.deepcopy(self.abs_position)
         x = 0
@@ -85,9 +83,9 @@ class Character(sprite_base.EntityCus):
         """ Update the character's direction. """
         pass
 
-    def use_weapon(self, mouse_input) -> None:
+    def use_weapon(self, mouse_input, group) -> None:
         """ Use the character's weapon. """
-        self.camera.char_bullets.add(projectile.BasicProjectile(self, mouse_input))
+        group.add(projectile.BasicProjectile(self, mouse_input))
         pass
 
     def animate(self) -> None:

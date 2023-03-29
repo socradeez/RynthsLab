@@ -63,21 +63,27 @@ class HWall(sprite_base.SpriteCus):
         self.image = pg.draw.rect(screen, (0, 0, 0), self.rect)
 
 '''
-class HWall(sprite_base.EntityCus):
-    def __init__(self, indices):
+class Wall(sprite_base.EntityCus):
+    def __init__(self, indices, type):
         self.indices = indices
         y, x = indices
-        abs_x = x * 55 - 5
-        abs_y = y * 55 + 50
+        if type == 'H':
+            abs_x = x * 55 - 5
+            abs_y = y * 55 + 50
+            self.width = 60
+            self.height = 5
+        elif type == 'V':
+            abs_x = x * 55 + 50
+            abs_y = y * 55 - 5
+            self.width = 5
+            self.height = 60
         abs_position = (abs_x, abs_y)
         super().__init__(abs_position)
-        self.width = 60
-        self.height = 5
         self.rect = pg.Rect(x, y, self.width, self.height)
         self.image = pg.Surface((self.width, self.height))
         self.image.fill((0, 0, 0))
 
-class VWall(sprite_base.EntityCus):
+'''class VWall(sprite_base.EntityCus):
     def __init__(self, indices):
         self.indices = indices
         y, x = indices
@@ -89,7 +95,7 @@ class VWall(sprite_base.EntityCus):
         self.height = 60
         self.rect = pg.Rect(x, y, self.width, self.height)
         self.image = pg.Surface((self.width, self.height))
-        self.image.fill((0, 0, 0))
+        self.image.fill((0, 0, 0))'''
 
 
 

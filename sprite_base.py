@@ -68,6 +68,5 @@ class EntityCus(SpriteCus):
         return self.cam_position
 
     def draw(self, camera):
-        self.update_rel(camera)
         self.rect.topleft = self.cam_position
         camera.screen.blit(self.image, self.rect)
